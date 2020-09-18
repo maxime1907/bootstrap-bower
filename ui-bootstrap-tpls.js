@@ -3833,11 +3833,13 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.multiMap', 'ui.bootstrap.sta
     function linkFn(scope, element, attrs) {
       if (attrs.modalInClass) {
         $animate.addClass(element, attrs.modalInClass);
+        $animate.addClass(element, "show");
 
         scope.$on($modalStack.NOW_CLOSING_EVENT, function(e, setIsAsync) {
           var done = setIsAsync();
           if (scope.modalOptions.animation) {
-            $animate.removeClass(element, attrs.modalInClass).then(done);
+            $animate.removeClass(element, attrs.modalInClass);
+            $animate.removeClass(element, "show").then(done);
           } else {
             done();
           }
@@ -3892,13 +3894,15 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.multiMap', 'ui.bootstrap.sta
 
           if (attrs.modalInClass) {
             animationPromise = $animateCss(element, {
-              addClass: attrs.modalInClass
+              addClass: attrs.modalInClass,
+              addClass: "show"
             }).start();
 
             scope.$on($modalStack.NOW_CLOSING_EVENT, function(e, setIsAsync) {
               var done = setIsAsync();
               $animateCss(element, {
-                removeClass: attrs.modalInClass
+                removeClass: attrs.modalInClass,
+                removeClass: "show"
               }).start().then(done);
             });
           }
